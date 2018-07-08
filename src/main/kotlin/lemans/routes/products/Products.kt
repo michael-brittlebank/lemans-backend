@@ -1,3 +1,5 @@
 package lemans.routes.products
 
-data class Products(val entities: String, val maximumPrice: String)
+import lemans.models.Product
+
+data class Products(val entities: List<Product>)
