@@ -20,12 +20,14 @@ class ProductsController {
     fun searchProducts(
             @RequestParam(value = "minimumPrice", required = false, defaultValue = "0.0") minimumPrice: String,
             @RequestParam(value = "maximumPrice", required = false, defaultValue = "0.0") maximumPrice: String): SearchProducts {
-        val products: List<Product> = listOf(Product(1,"first product", "cat1 $minimumPrice $maximumPrice", listOf()))
+        val products: List<Product> = listOf(Product(1,"first product", "cat1 $minimumPrice $maximumPrice"))
         LOG.warning(products.toString())
         return SearchProducts(products)
     }
 
     @GetMapping("/load")
     fun loadProducts() =
+            //https://stackoverflow.com/questions/44061143/read-csv-line-by-line-in-kotlin
+            //http://opencsv.sourceforge.net/
             LoadProducts("Hello World")
 }

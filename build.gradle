@@ -1,6 +1,6 @@
 buildscript {
-    ext.kotlin_version = '1.1.3' // Required for Kotlin integration
-    ext.spring_boot_version = '1.5.4.RELEASE'
+    ext.kotlin_version = '1.2.51' // Required for Kotlin integration
+    ext.spring_boot_version = '2.0.1.RELEASE'
     repositories {
         jcenter()
     }
@@ -14,6 +14,7 @@ buildscript {
 apply plugin: 'kotlin' // Required for Kotlin integration
 apply plugin: "kotlin-spring" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 jar {
     baseName = 'gs-rest-service'
@@ -28,4 +29,16 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Required for Kotlin integration
     compile 'org.springframework.boot:spring-boot-starter-web'
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    // https://stackoverflow.com/questions/49951957/kotlin-spring-boot-cannot-find-beans
+//    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    compile("org.jetbrains.kotlin:kotlin-reflect")
+
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    runtime('mysql:mysql-connector-java')
+    testCompile('org.springframework.security:spring-security-test')
 }
