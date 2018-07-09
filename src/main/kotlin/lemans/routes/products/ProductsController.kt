@@ -31,6 +31,7 @@ class ProductsController {
     fun searchProducts(
             @RequestParam(value = "minimumPrice", required = false, defaultValue = "0.0") minimumPrice: String,
             @RequestParam(value = "maximumPrice", required = false, defaultValue = "0.0") maximumPrice: String): SearchProducts {
+        LOG.info("params: $minimumPrice, $maximumPrice")
         // todo, need to return subarray of parts matching product id
         val products: Iterable<Product> = productRepo.findAll()
         // todo, filter results by minimum and maximum prices
