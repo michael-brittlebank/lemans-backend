@@ -1,24 +1,35 @@
 package lemans.models
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.validation.constraints.NotBlank
+import javax.persistence.*
 
 @Entity
-data class Part(
-        @Id @GeneratedValue(strategy = GenerationType.AUTO)
-        val partId: Long = 0,
-        @get: NotBlank
-        val punctuatedPartNumber: String = "",
-        @get: NotBlank
-        val partDescr: String = "",
-        @get: NotBlank
-        val productId: Long = 0,
-        @get: NotBlank
-        val originalRetailPrice: Double = 0.0,
-        @get: NotBlank
-        val brandName: String = "",
-        @get: NotBlank
-        val image: String = "")
+@Table(name = "part")
+class Part() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "part_id")
+    var partId: Int = 0
+    @Column(name = "punctuated_part_number")
+    lateinit var punctuatedPartNumber: String
+    @Column(name = "part_description")
+    lateinit var partDescr: String
+    @Column(name = "product_id")
+    var productId: Long = 0
+    @Column(name = "original_retail_price")
+    var originalRetailPrice: Double = 0.0
+    @Column(name = "brand_name")
+    lateinit var brandName: String
+    @Column(name = "image")
+    lateinit var image: String
+
+    constructor(partId: Int, punctuatedPartNumber: String, partDescr: String, productId: Long,
+                originalRetailPrice: Double, brandName: String, image: String) : this() {
+        this.partId = partId
+        this.punctuatedPartNumber = punctuatedPartNumber
+        this.partDescr = partDescr
+        this.productId = productId
+        this.originalRetailPrice = originalRetailPrice
+        this.brandName = brandName
+        this.image = image
+    }
+}
