@@ -7,8 +7,10 @@ import javax.persistence.*
 class Product() {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    var id: Int? = 0
     @Column(name = "product_id")
-    var productId: Int = 0
+    var productId: Int? = 0
     @Column(name = "product_name")
     lateinit var productName: String
     @Column(name = "category_name")

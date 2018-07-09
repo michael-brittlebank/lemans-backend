@@ -31,8 +31,9 @@ class ProductsController {
     fun searchProducts(
             @RequestParam(value = "minimumPrice", required = false, defaultValue = "0.0") minimumPrice: String,
             @RequestParam(value = "maximumPrice", required = false, defaultValue = "0.0") maximumPrice: String): SearchProducts {
-        val products: List<Product> = listOf(Product(1,"first product", "cat1 $minimumPrice $maximumPrice"))
-        LOG.warning(products.toString())
+        // todo, need to return subarray of parts matching product id
+        val products: Iterable<Product> = productRepo.findAll()
+        // todo, filter results by minimum and maximum prices
         return SearchProducts(products)
     }
 
@@ -50,18 +51,31 @@ class ProductsController {
             while (record != null) {
                 val tempProduct = Product(record[0].toInt(), record[1], record[2])
                 // defaults to update instead of create if record with primary key already exists
-                productRepo.save(tempProduct)
+                try {
+                    productRepo.save(tempProduct)
+                } catch (e: Exception) {
+                    // print error but keep importing lines
+                    println("--- save line error ----")
+                    e.printStackTrace()
+                }
                 record = csvReader.readNext()
             }
             // load parts
+            // todo, relational tables needed for many to many parts to product id relationship
             fileReader = BufferedReader(FileReader("src/main/kotlin/lemans/data/parts.csv"))
             csvReader = CSVReader(fileReader)
             csvReader.readNext() // skip Header
             record = csvReader.readNext()
             while (record != null) {
-                val tempPart = Part(record[0], record[1], record[2].toLong(), record[3].toDouble(), record[4], record[5])
+                val tempPart = Part(record[0], record[1], record[2].toInt(), record[3].toDouble(), record[4], record[5])
                 // defaults to update instead of create if record with primary key already exists
-                partRepo.save(tempPart)
+                try {
+                    partRepo.save(tempPart)
+                } catch (e: Exception) {
+                    // print error but keep importing lines
+                    println("--- save line error ----")
+                    e.printStackTrace()
+                }
                 record = csvReader.readNext()
             }
             csvReader.close()
