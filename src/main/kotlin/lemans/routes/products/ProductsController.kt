@@ -11,6 +11,8 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 import com.opencsv.CSVReader
+import lemans.models.Part
+import lemans.repository.PartRepository
 import lemans.repository.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 class ProductsController {
 
     @Autowired lateinit var productRepo: ProductRepository
+    @Autowired lateinit var partRepo: PartRepository
 
     companion object {
         val LOG = Logger.getLogger(Application::class.java.name)
@@ -45,9 +48,20 @@ class ProductsController {
             csvReader.readNext() // skip Header
             record = csvReader.readNext()
             while (record != null) {
-                println(record[0] + " | " + record[1] + " | " + record[2])
                 val tempProduct = Product(record[0].toInt(), record[1], record[2])
+                // defaults to update instead of create if record with primary key already exists
                 productRepo.save(tempProduct)
+                record = csvReader.readNext()
+            }
+            // load parts
+            fileReader = BufferedReader(FileReader("src/main/kotlin/lemans/data/parts.csv"))
+            csvReader = CSVReader(fileReader)
+            csvReader.readNext() // skip Header
+            record = csvReader.readNext()
+            while (record != null) {
+                val tempPart = Part(record[0], record[1], record[2].toLong(), record[3].toDouble(), record[4], record[5])
+                // defaults to update instead of create if record with primary key already exists
+                partRepo.save(tempPart)
                 record = csvReader.readNext()
             }
             csvReader.close()

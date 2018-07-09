@@ -22,9 +22,8 @@ class Part() {
     @Column(name = "image")
     lateinit var image: String
 
-    constructor(partId: Int, punctuatedPartNumber: String, partDescr: String, productId: Long,
+    constructor(punctuatedPartNumber: String, partDescr: String, productId: Long,
                 originalRetailPrice: Double, brandName: String, image: String) : this() {
-        this.partId = partId
         this.punctuatedPartNumber = punctuatedPartNumber
         this.partDescr = partDescr
         this.productId = productId
